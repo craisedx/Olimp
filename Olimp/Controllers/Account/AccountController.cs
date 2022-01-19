@@ -46,8 +46,14 @@ namespace Olimp.Controllers.Account
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    await _database.Baskets.AddAsync(new Basket
+                    {
+                        User = user
+                    }); 
+
+                    await _database.SaveChangesAsync();
                     await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("MainPage", "Product");
                 }
 
                 foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);
@@ -76,7 +82,7 @@ namespace Olimp.Controllers.Account
                         return Redirect(model.ReturnUrl);
                     
                     await _database.SaveChangesAsync();
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("MainPage", "Product");
                 }
 
                 ModelState.AddModelError("", "Incorrect username or password");
@@ -89,7 +95,7 @@ namespace Olimp.Controllers.Account
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("MainPage", "Product");
         }
     }
 }

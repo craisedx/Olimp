@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Olimp.Business.Interfaces;
+using Olimp.Business.Services;
 using Olimp.Migrations;
 using Olimp.Models;
 using Olimp.ViewModels.Mappings;
@@ -28,6 +30,9 @@ namespace Olimp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IBasketService, BasketService>();
+
             services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddControllersWithViews();
@@ -49,6 +54,7 @@ namespace Olimp
                     options.User.RequireUniqueEmail = true;
                 })
                 .AddEntityFrameworkStores<ApplicationContext>();
+
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = false;
@@ -69,7 +75,7 @@ namespace Olimp
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Product/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -86,7 +92,7 @@ namespace Olimp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Product}/{action=MainPage}/{id?}");
             });
         }
     }

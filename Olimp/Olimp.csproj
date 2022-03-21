@@ -25,4 +25,8 @@
       <_ContentIncludedByDefault Remove="Views\Home\Privacy.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Properties" />
+    </ItemGroup>
+
 </Project>

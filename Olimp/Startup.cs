@@ -32,6 +32,8 @@ namespace Olimp
         {
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IBasketService, BasketService>();
+            services.AddScoped<ISeedDatabaseService, SeedDatabaseService>();
+            services.AddScoped<IAdminService, AdminService>();
 
             services.AddAutoMapper(typeof(MappingProfile));
 

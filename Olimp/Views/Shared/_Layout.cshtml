@@ -50,6 +50,10 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" asp-route-id="@User.Claims.ElementAt(0).Value">@User.Claims.ElementAt(1).Value</a>
                                 <div class="dropdown-divider"></div>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="Index" asp-route-id="@User.Claims.ElementAt(0).Value">Админ панель</a>
+                                }
                                 <a class="dropdown-item" asp-area="" asp-controller="Product" asp-action="ShowOrders" asp-route-id="@User.Claims.ElementAt(0).Value">Заказы</a>
                                 <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Выход</a>
                             </div>
@@ -74,6 +78,15 @@
         @RenderBody()
     </main>
 </div>
+@if (User.Identity.IsAuthenticated)
+{
+    <script>
+let avatar = document.getElementById('avatar');
+$.get('@Url.Action("GetUserImage", "Account", new {id = User.Claims.ElementAt(0).Value})', function(data, status){
+    avatar.src = data;
+});
+    </script>
+}
 @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>

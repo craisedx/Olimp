@@ -26,6 +26,12 @@ namespace Olimp.Controllers.Account
             _signInManager = signInManager;
         }
         
+        public async Task<string> GetUserImage(string id)
+        {
+            var user = await _database.Users.SingleOrDefaultAsync(u => u.Id == id);
+            return user.UserImage;
+        }
+        
         [HttpGet]
         public IActionResult Register()
         {

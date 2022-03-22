@@ -34,6 +34,24 @@ namespace Olimp.Controllers
             return View(products);
         }
 
+        public async Task<IActionResult> AllProducts(int categoriesId)
+        {
+            var categories = await productService.GetAllCategories();
+            
+            ViewBag.Categories = categories;
+            
+            if (categoriesId != 0)
+            {
+                var products = await productService.GetProductsByCategoryId(categoriesId);
+                
+                return View(products);
+            }
+            
+            var productsWithOutFilters = await productService.GetAllProducts();
+
+            return View(productsWithOutFilters);
+        }
+
         public async Task<IActionResult> UserBasket(string id)
         {
             var userBasket = await basketService.GetUserBasket(id);

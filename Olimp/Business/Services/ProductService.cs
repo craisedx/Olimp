@@ -9,6 +9,7 @@ using Olimp.ViewModels.StoreWarehouse;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Olimp.ViewModels.Category;
 
 namespace Olimp.Business.Services
 {
@@ -36,6 +37,21 @@ namespace Olimp.Business.Services
 
             return mapper.Map<StoreWarehouseViewModel>(product);
         }
+        
+        /// <summary>
+        /// Get all products by category id.
+        /// </summary>
+        /// <param name="categoryId">Product id in warehouse.</param>
+        /// <returns>Products by category id.</returns>
+        public async Task<List<StoreWarehouseViewModel>> GetProductsByCategoryId(int categoryId)
+        {
+            var product = await db.StoreWarehouses.Where(x => x.Product.CategoryId == categoryId)
+                .Include(x => x.Product).ThenInclude(x => x.Brand)
+                .Include(x => x.Product).ThenInclude(x => x.Category)
+                .ToListAsync();
+
+            return mapper.Map<List<StoreWarehouseViewModel>>(product);
+        }
 
         /// <summary>
         /// Get all products in warehouse.
@@ -48,6 +64,17 @@ namespace Olimp.Business.Services
                 .Include(x => x.Product).ThenInclude(x => x.Category).ToListAsync();
 
             return mapper.Map<List<StoreWarehouseViewModel>>(products);
+        }
+        
+        /// <summary>
+        /// Get all categories.
+        /// </summary>
+        /// <returns>All categories.</returns>
+        public async Task<List<CategoryViewModel>> GetAllCategories()
+        {
+            var products = await db.Categories.ToListAsync();
+
+            return mapper.Map<List<CategoryViewModel>>(products);
         }
     }
 }

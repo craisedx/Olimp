@@ -1,0 +1,122 @@
+﻿<div id="grid"></div>
+    <script>
+        $(document).ready(function() {
+            $("#grid").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "@Url.Action("GetAllProduct", "Admin")",
+                        update: {
+                            url: "@Url.Action("EditProduct","Admin")",
+                            dataType: "json",
+                            type: "POST"
+                        },
+                        create:{
+                            url: "@Url.Action("CreateProduct","Admin")",
+                            dataType: "json",
+                            type: "POST"  
+                        },
+                        destroy: {
+                            url: "@Url.Action("DeleteProduct","Admin")",
+                            dataType: "json",
+                            type: "DELETE"
+                        }
+                    },
+                    schema: {
+                        model: {
+                            id: "Id",
+                            fields: {
+                                Id: { editable: false, from: "id", type: "number" },
+                                Category: { from: "category", validation: {required: true} }, 
+                                CategoryId: {from: "categoryId", validation: {required: true} },
+                                Brand: { from: "brand", validation: {required: true} }, 
+                                BrandId: {from: "brandId", validation: {required: true} },
+                                Title: {from: "title", validation: {required: true} },
+                                Image: {from: "image", validation: {required: true} },
+                                Description: { from: "description", validation: {required: true }},
+                            }
+                        }
+                    },
+                    pageSize: 20,
+                    serverPaging: false,
+                    serverFiltering: false,
+                    serverSorting: false
+                },
+                height: 550,
+                editable: "popup",
+                filterable: true,
+                sortable: true,
+                pageable: true,
+                toolbar: [
+                    {name: "create"}
+                ],
+                columns: [
+                    {
+                        field: "Category.productCategory",
+                        title: "Категория",
+                        editor: categoryEditor
+                    }, 
+                    {
+                        field: "Brand.productBrand",
+                        title: "Бренд",
+                        editor: brandEditor
+                    }, 
+                    {
+                        field: "Title",
+                        title: "Название",
+                    },
+                    {
+                        field: "Image",
+                        title: "Ссылка на картинку",
+                    },
+                    {
+                        field: "Description",
+                        title: "Описание",
+                    },
+                    {
+                        command: "edit", 
+                    },
+                    {
+                        command: "destroy"
+                    }
+                ]
+            });
+        });
+        
+        function categoryEditor(container, options) {
+            $('<input required name="CategoryId">')
+                .appendTo(container)
+                .kendoDropDownList({
+                    dataTextField: "productCategory",
+                    dataValueField: "id",
+                    height: 500,
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: "@Url.Action("GetAllCategory", "Admin")",
+                                dataType: "json",
+                                cache: false
+                            }
+                        }
+                    }
+                });
+        }
+        
+        function brandEditor(container, options) {
+            $('<input required name="BrandId">')
+                .appendTo(container)
+                .kendoDropDownList({
+                    dataTextField: "productBrand",
+                    dataValueField: "id",
+                    height: 500,
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: "@Url.Action("GetAllBrand", "Admin")",
+                                dataType: "json",
+                                cache: false
+                            }
+                        }
+                    }
+                });
+        }
+</script>

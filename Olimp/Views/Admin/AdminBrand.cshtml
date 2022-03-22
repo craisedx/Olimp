@@ -1,0 +1,68 @@
+﻿<div id="grid"> </div>
+<script>
+    $("#grid").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "@Url.Action("GetAllBrand", "Admin")",
+                        update: {
+                            url: "@Url.Action("EditBrand","Admin")",
+                            dataType: "json",
+                            type: "POST"
+                        },
+                        create:{
+                            url: "@Url.Action("CreateBrand", "Admin")",
+                            dataType: "json",
+                            type: "POST"
+                        },
+                        destroy: {
+                            url: "@Url.Action("DeleteBrand", "Admin")",
+                            dataType: "json",
+                            type: "DELETE"
+                        }
+                    },
+                    schema: {
+                        model: {
+                            id: "Id",
+                            fields: {
+                                Id: { from: "id", type: "number", editable: false },
+                                ProductBrand: { from: "productBrand", validation: {required: true}},
+                                Description: { from: "description", validation: {required: true}},
+                                Image: { from: "image", validation: {required: true}},
+                            }
+                        }
+                    },
+                    pageSize: 20,
+                    serverPaging: false,
+                    serverFiltering: false,
+                    serverSorting: false
+                },
+                height: 550,
+                editable: "popup",
+                filterable: true,
+                sortable: true,
+                pageable: true,
+                toolbar: [
+                    {name: "create"}
+                ],
+                columns: [
+                    {
+                        field: "ProductBrand",
+                        title: "Название бренда"
+                    },
+                    {
+                        field: "Description",
+                        title: "Описание"
+                    },
+                    {
+                        field: "Image",
+                        title: "Ссылка на картинку"
+                    },
+                    {
+                        command: ["edit"]
+                    },
+                    {
+                        command: "destroy"
+                    }
+                ]
+            });
+</script>

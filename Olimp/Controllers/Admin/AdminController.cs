@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Olimp.Business.Interfaces;
 using Olimp.ViewModels.Brand;
 using Olimp.ViewModels.Category;
+using Olimp.ViewModels.Order;
 using Olimp.ViewModels.Product;
 using Olimp.ViewModels.StoreWarehouse;
 
@@ -19,6 +20,36 @@ namespace Olimp.Controllers.Admin
 
         // GET
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult AdminCategory()
+        {
+            return View();
+        }
+        
+        [HttpGet]
+        public IActionResult AdminBrand()
+        {
+            return View();
+        }
+        
+        [HttpGet]
+        public IActionResult AdminProduct()
+        {
+            return View();
+        }
+        
+        [HttpGet]
+        public IActionResult AdminStoreWarehouse()
+        {
+            return View();
+        }
+        
+        [HttpGet]
+        public IActionResult AdminOrder()
         {
             return View();
         }
@@ -86,6 +117,14 @@ namespace Olimp.Controllers.Admin
 
             return Json(storeWarehouse);
         }
+        
+        [HttpPost]
+        public async Task<JsonResult> EditOrder(OrderViewModel model)
+        {
+            var order = await _adminService.EditOrder(model);
+
+            return Json(order);
+        }
 
         [HttpGet]
         public async Task<JsonResult> GetAllCategory()
@@ -117,6 +156,22 @@ namespace Olimp.Controllers.Admin
             var storeWarehouse = await _adminService.GetAllStoreWarehouse();
 
             return Json(storeWarehouse);
+        }
+        
+        [HttpGet]
+        public async Task<JsonResult> GetAllOrder()
+        {
+            var order = await _adminService.GetAllOrder();
+
+            return Json(order);
+        }
+        
+        [HttpGet]
+        public async Task<JsonResult> GetAllStatus()
+        {
+            var status = await _adminService.GetAllStatus();
+
+            return Json(status);
         }
 
         [HttpDelete]

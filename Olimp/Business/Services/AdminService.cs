@@ -7,6 +7,7 @@ using Olimp.Migrations;
 using Olimp.Models;
 using Olimp.ViewModels.Brand;
 using Olimp.ViewModels.Category;
+using Olimp.ViewModels.Order;
 using Olimp.ViewModels.Product;
 using Olimp.ViewModels.StoreWarehouse;
 
@@ -50,7 +51,10 @@ namespace Olimp.Business.Services
             await _db.Products.AddAsync(product);
             await _db.SaveChangesAsync();
 
-            return _mapper.Map<ProductViewModel>(product);
+            var addedProduct = await _db.Products.Include(x => x.Brand).Include(x => x.Category)
+                .FirstOrDefaultAsync(x => x.Id == product.Id);
+
+            return _mapper.Map<ProductViewModel>(addedProduct);
         }
 
         public async Task<StoreWarehouseViewModel> CreateStoreWarehouse(StoreWarehouseViewModel model)
@@ -60,7 +64,10 @@ namespace Olimp.Business.Services
             await _db.StoreWarehouses.AddAsync(storeWarehouse);
             await _db.SaveChangesAsync();
 
-            return _mapper.Map<StoreWarehouseViewModel>(storeWarehouse);
+            var addedStoreWarehouse = await _db.StoreWarehouses.Include(x => x.Product)
+                .FirstOrDefaultAsync(x => x.Id == storeWarehouse.Id);
+
+            return _mapper.Map<StoreWarehouseViewModel>(addedStoreWarehouse);
         }
 
         public async Task<CategoryViewModel> EditCategory(CategoryViewModel model)
@@ -110,10 +117,25 @@ namespace Olimp.Business.Services
             storeWarehouse.Price = model.Price;
             storeWarehouse.Quantity = model.Quantity;
             storeWarehouse.Discount = model.Discount;
+            await _db.SaveChangesAsync();
 
-            var editStoreWarehouse = await _db.StoreWarehouses.FirstOrDefaultAsync(x => x.Id == storeWarehouse.Id);
+            var editStoreWarehouse = await _db.StoreWarehouses.Include(x => x.Product)
+                .FirstOrDefaultAsync(x => x.Id == storeWarehouse.Id);
 
             return _mapper.Map<StoreWarehouseViewModel>(editStoreWarehouse);
+        }
+
+        public async Task<OrderViewModel> EditOrder(OrderViewModel model)
+        {
+            var order = await _db.Orders.FirstOrDefaultAsync(x => x.Id == model.Id);
+
+            order.StatusId = model.StatusId;
+            await _db.SaveChangesAsync();
+
+            var editedOrder = await _db.Orders.Include(x => x.Status).Include(x => x.StoreWarehouses)
+                .Include(x => x.User).FirstOrDefaultAsync(x => x.Id == order.Id);
+
+            return _mapper.Map<OrderViewModel>(editedOrder);
         }
 
         public async Task<List<CategoryViewModel>> GetAllCategory()
@@ -132,16 +154,32 @@ namespace Olimp.Business.Services
 
         public async Task<List<ProductViewModel>> GetAllProduct()
         {
-            var product = await _db.Products.ToListAsync();
+            var product = await _db.Products.Include(x => x.Brand).Include(x => x.Category).ToListAsync();
 
             return _mapper.Map<List<ProductViewModel>>(product);
         }
 
         public async Task<List<StoreWarehouseViewModel>> GetAllStoreWarehouse()
         {
-            var storeWarehouse = await _db.StoreWarehouses.ToListAsync();
+            var storeWarehouse = await _db.StoreWarehouses.Include(x => x.Product)
+                .ToListAsync();
 
             return _mapper.Map<List<StoreWarehouseViewModel>>(storeWarehouse);
+        }
+
+        public async Task<List<StatusViewModel>> GetAllStatus()
+        {
+            var status = await _db.Status.ToListAsync();
+
+            return _mapper.Map<List<StatusViewModel>>(status);
+        }
+
+        public async Task<List<OrderViewModel>> GetAllOrder()
+        {
+            var orders = await _db.Orders.Include(x => x.Status).Include(x => x.StoreWarehouses)
+                .Include(x => x.User).ToListAsync();
+
+            return _mapper.Map<List<OrderViewModel>>(orders);
         }
 
         public async Task<CategoryViewModel> DeleteCategory(CategoryViewModel model)

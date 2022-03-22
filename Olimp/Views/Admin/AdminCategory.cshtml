@@ -1,0 +1,62 @@
+﻿<div id="grid"> </div>
+<script>
+    $("#grid").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "@Url.Action("GetAllCategory", "Admin")",
+                        update: {
+                            url: "@Url.Action("EditCategory","Admin")",
+                            dataType: "json",
+                            type: "POST"
+                        },
+                        create:{
+                            url: "@Url.Action("CreateCategory", "Admin")",
+                            dataType: "json",
+                            type: "POST"
+                        },
+                        destroy: {
+                            url: "@Url.Action("DeleteCategory", "Admin")",
+                            dataType: "json",
+                            type: "DELETE"
+                        }
+                    },
+                    schema: {
+                        model: {
+                            id: "Id",
+                            fields: {
+                                Id: { from: "id", type: "number", editable: false },
+                                ProductCategory: { from: "productCategory"},
+                            }
+                        }
+                    },
+                    pageSize: 20,
+                    serverPaging: false,
+                    serverFiltering: false,
+                    serverSorting: false
+                },
+                height: 550,
+                editable: "popup",
+                filterable: true,
+                sortable: true,
+                pageable: true,
+                toolbar: [
+                    {name: "create"}
+                ],
+                columns: [
+                    {
+                        field:"Id",
+                        filterable: false
+                    },
+                    {
+                        field: "ProductCategory",
+                        title: "Категория"
+                    },
+                    {
+                        command: ["edit"]
+                    },
+                    {
+                        command: "destroy"
+                    }
+                ]
+            });
+</script>

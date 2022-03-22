@@ -2,6 +2,7 @@
 using Olimp.ViewModels.Basket;
 using Olimp.ViewModels.Brand;
 using Olimp.ViewModels.Category;
+using Olimp.ViewModels.Order;
 using Olimp.ViewModels.Product;
 using Olimp.ViewModels.StoreWarehouse;
 
@@ -58,6 +59,8 @@ namespace Olimp.ViewModels.Mappings
                 .ForMember(sw => sw.Baskets, opt => opt.Ignore())
                 .ForMember(sw => sw.Orders, opt => opt.Ignore())
                 .ReverseMap();
+            CreateMap<OrderViewModel, Models.Order>().ReverseMap();
+            CreateMap<StatusViewModel, Models.Status>().ReverseMap();
         }
     }
 }

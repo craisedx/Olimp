@@ -1,0 +1,96 @@
+﻿<div id="grid"></div>
+    <script>
+        $(document).ready(function() {
+            $("#grid").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "@Url.Action("GetAllStoreWarehouse", "Admin")",
+                        update: {
+                            url: "@Url.Action("EditStoreWarehouse","Admin")",
+                            dataType: "json",
+                            type: "POST"
+                        },
+                        create:{
+                            url: "@Url.Action("CreateStoreWarehouse","Admin")",
+                            dataType: "json",
+                            type: "POST"  
+                        },
+                        destroy: {
+                            url: "@Url.Action("DeleteStoreWarehouse","Admin")",
+                            dataType: "json",
+                            type: "DELETE"
+                        }
+                    },
+                    schema: {
+                        model: {
+                            id: "Id",
+                            fields: {
+                                Id: { editable: false, from: "id", type: "number" },
+                                Product: { from: "product", validation: {required: true} }, 
+                                ProductId: {from: "productId", validation: {required: true} },
+                                Price: { from: "price", type: "number" ,validation: {required: true} }, 
+                                Quantity: {from: "quantity", type: "number", validation: {required: true} },
+                                Discount: {from: "discount", type: "number", validation: {required: true} }
+                            }
+                        }
+                    },
+                    pageSize: 20,
+                    serverPaging: false,
+                    serverFiltering: false,
+                    serverSorting: false
+                },
+                height: 550,
+                editable: "popup",
+                filterable: true,
+                sortable: true,
+                pageable: true,
+                toolbar: [
+                    {name: "create"}
+                ],
+                columns: [
+                    {
+                        field: "Product.title",
+                        title: "Товар",
+                        editor: productEditor
+                    }, 
+                    {
+                        field: "Price",
+                        title: "Цена"
+                    }, 
+                    {
+                        field: "Quantity",
+                        title: "Количество",
+                    },
+                    {
+                        field: "Discount",
+                        title: "Скидка",
+                    },
+                    {
+                        command: "edit", 
+                    },
+                    {
+                        command: "destroy"
+                    }
+                ]
+            });
+        });
+        
+        function productEditor(container, options) {
+            $('<input required name="ProductId">')
+                .appendTo(container)
+                .kendoDropDownList({
+                    dataTextField: "title",
+                    dataValueField: "id",
+                    height: 500,
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: "@Url.Action("GetAllProduct", "Admin")",
+                                dataType: "json",
+                                cache: false
+                            }
+                        }
+                    }
+                });
+        }
+</script>

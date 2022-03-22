@@ -1,0 +1,87 @@
+﻿<div id="grid"></div>
+<script>
+               $(document).ready(function() {
+                   $("#grid").kendoGrid({
+                       dataSource: {
+                           transport: {
+                               read: "@Url.Action("GetAllOrder", "Admin")",
+                               update: {
+                                   url: "@Url.Action("EditOrder", "Admin")",
+                                   dataType: "json",
+                                   type: "POST"
+                               }
+                           },
+                           schema: {
+                               model: {
+                                   id: "Id",
+                                   fields: {
+                                       Id: { editable: false, from: "id", type: "number" },
+                                       User: { editable: false, from: "user.userName" }, 
+                                       OrderDate: { editable: false, from: "orderDate", type: "date" },
+                                       FinalPrice: { editable: false, from: "finalPrice", type: "number"},
+                                       Status: { from: "status" },
+                                       StatusId: { from: "statusId", type: "number" }
+                                   }
+                               }
+                           },
+                           pageSize: 20,
+                           serverPaging: false,
+                           serverFiltering: false,
+                           serverSorting: false
+                       },
+                       height: 550,
+                       editable: "popup",
+                       filterable: true,
+                       sortable: true,
+                       pageable: true,
+                       columns: [
+                           {
+                               field: "Id",
+                               editable: false,
+                               title: "Номер заказа"  
+                           },
+                           {
+                               field: "User",
+                               editable: false,
+                               title: "Пользователь"
+                           },
+                           {
+                               field: "OrderDate",
+                               title: "Дата заказа",
+                               format:"{0:dd/MM/yyyy HH:MM}"
+                           },
+                           {
+                               field: "FinalPrice",
+                               title: "Сумма к оплате"  
+                           },
+                           {
+                               field: "Status.orderStatus",
+                               title: "Статус",
+                               editor: orderStatusEditor,
+                           },
+                           {
+                               command: "edit", 
+                           },
+                       ]
+                   });
+               });
+               
+               function orderStatusEditor(container, options) {
+                   $('<input required name="StatusId">')
+                       .appendTo(container)
+                       .kendoDropDownList({
+                           dataTextField: "orderStatus",
+                           dataValueField: "id",
+                           height: 500,
+                           dataSource: {
+                               transport: {
+                                   read: {
+                                       url: "@Url.Action("GetAllStatus", "Admin")",
+                                       dataType: "json",
+                                       cache: false
+                                   }
+                               }
+                           }
+                       });
+               }
+</script>

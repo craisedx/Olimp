@@ -43,6 +43,8 @@ namespace Olimp.Controllers
             if (categoriesId != 0)
             {
                 var products = await productService.GetProductsByCategoryId(categoriesId);
+
+                ViewBag.SelectId = categoriesId;
                 
                 return View(products);
             }

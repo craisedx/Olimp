@@ -1,0 +1,15 @@
+﻿@model List<Olimp.ViewModels.Brand.BrandViewModel>
+
+<div class="container">
+    @foreach (var brand in @Model)
+    {
+        <div class="row bg-secondary shadow p-3 mb-5 bg-white rounded m-2 d-flex justify-content-center">
+            <div class="col-lg-12 d-flex justify-content-center align-items-baseline">
+                <div class="mr-1 h2">@brand.ProductBrand</div>
+            </div>
+            <div class="col-lg-12 d-flex justify-content-center align-items-baseline">
+                @brand.Description
+            </div>
+        </div>
+    }
+</div>

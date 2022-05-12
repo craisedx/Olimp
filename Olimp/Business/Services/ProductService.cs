@@ -52,6 +52,82 @@ namespace Olimp.Business.Services
 
             return mapper.Map<List<StoreWarehouseViewModel>>(product);
         }
+        
+        /// <summary>
+        /// Get products by filters ids.
+        /// </summary>
+        /// <param name="categoryId">Category id in warehouse.</param>
+        /// <param name="brandId">Brand id in warehouse.</param>
+        /// <param name="priceStart">Price start.</param>
+        /// <param name="priceEnd">Price end.</param>
+        /// <param name="sortType">Type sort.</param>
+        /// <returns>Products by filters ids.</returns>
+        public async Task<List<StoreWarehouseViewModel>> GetProductsByFilters(int categoryId, int brandId, int? priceStart, int? priceEnd, int sortType)
+        {
+            var products = await db.StoreWarehouses
+                .Include(x => x.Product).ThenInclude(x => x.Brand)
+                .Include(x => x.Product).ThenInclude(x => x.Category).ToListAsync();
+
+            if (products == null) return null;
+            
+            if (categoryId != 0)
+            {
+                products = products.Where(x => x.Product.CategoryId == categoryId).ToList();
+            }
+
+            if (brandId != 0)
+            {
+                products = products.Where(x => x.Product.BrandId == brandId).ToList();
+            }
+
+            if (priceStart.HasValue)
+            {
+                products = products.Where(x => x.Price >= priceStart.Value).ToList();
+            }
+
+            if (priceEnd.HasValue)
+            {
+                products = products.Where(x => x.Price <= priceEnd).ToList();
+            }
+
+            switch (sortType)
+            {
+                case 0:
+                {
+                    break;
+                }
+                case 1:
+                {
+                    products = products.OrderBy(x => x.Price).ToList();
+                    break;
+                }
+                case 2:
+                {
+                    products = products.OrderByDescending(x => x.Price).ToList();
+                    break;
+                }
+            }
+            
+            return mapper.Map<List<StoreWarehouseViewModel>>(products);
+        }
+        
+        /// <summary>
+        /// Get products by name.
+        /// </summary>
+        /// <param name="productName">Product name.</param>
+        /// <returns>All products like name.</returns>
+        public async Task<List<StoreWarehouseViewModel>> GetProductsByName(string productName)
+        {
+            var events = await db.StoreWarehouses
+                .Include(x => x.Product)
+                .ThenInclude(x => x.Brand)
+                .Include(x => x.Product)
+                .ThenInclude(x => x.Category)
+                .Where(x => x.Product.Title.Contains(productName))
+                .ToListAsync();
+
+            return mapper.Map<List<StoreWarehouseViewModel>>(events);
+        }
 
         /// <summary>
         /// Get all products in warehouse.

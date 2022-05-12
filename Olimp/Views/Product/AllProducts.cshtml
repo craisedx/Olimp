@@ -11,7 +11,7 @@
                         <option value="0">Не выбрано</option>
                         @foreach (var item in ViewBag.Categories)
                         {
-                            if (item.Id == ViewBag.SelectId)
+                            if (item.Id == ViewBag.SelectCategoriesId)
                             {
                                 <option selected value="@item.Id">@item.ProductCategory</option>
                             }
@@ -19,6 +19,47 @@
                             {
                                 <option value="@item.Id">@item.ProductCategory</option>
                             }
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <p style="text-align: center" class="h3 hb"> Бренд</p>
+                    <select size="1" name="brandId" class="form-control">
+                        <option value="0">Не выбрано</option>
+                        @foreach (var item in ViewBag.Brands)
+                        {
+                            if (item.Id == ViewBag.SelectBrandsId)
+                            {
+                                <option selected value="@item.Id">@item.ProductBrand</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.ProductBrand</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <input type="number" name="priceStart" placeholder="Цена от..">
+                <input type="number" name="priceEnd" placeholder="..Цена до">
+                <div class="form-group">
+                    <p style="text-align: center" class="h3 hb"> Тип сортировки</p>
+                    <select size="1" name="sortType" class="form-control">
+                        <option value="0">По умолчанию</option>
+                        @if (1 == ViewBag.SelectedSort)
+                        {
+                            <option selected value="1">По возрастанию цены</option>
+                        }
+                        else
+                        {
+                            <option value="1">По возрастанию цены</option>
+                        }
+                        @if (2 == ViewBag.SelectedSort)
+                        {
+                            <option selected value="2">По убыванию цены цены</option>
+                        }
+                        else
+                        {
+                            <option value="2">По убыванию цены цены</option>
                         }
                     </select>
                 </div>
@@ -33,7 +74,7 @@
             {
                 <div class="col-4 mb-4">
                     <div class="card">
-                        <img class="card-img" src="@item.Product.Image" alt="@item.Product.Title image">
+                        <img class="card-img responsive" src="@item.Product.Image" alt="@item.Product.Title image">
                         <div class="card-body">
                             <h4 class="card-title">@item.Product.Title</h4>
                             <div class="buy d-flex justify-content-between align-items-center">

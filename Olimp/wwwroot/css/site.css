@@ -24,6 +24,16 @@ a {
   border-color: #1861ac;
 }
 
+.responsive {
+  width: 100%;
+  max-height: 425px;
+  max-width: 340px;
+  min-height: 200px;
+  min-width: 300px;
+  height: auto;
+  object-fit: cover;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {

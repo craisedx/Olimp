@@ -30,6 +30,25 @@ namespace Olimp.Business.Interfaces
         Task<List<StoreWarehouseViewModel>> GetAllProducts();
 
         /// <summary>
+        /// Get products by filters ids.
+        /// </summary>
+        /// <param name="categoryId">Category id in warehouse.</param>
+        /// <param name="brandId">Brand id in warehouse.</param>
+        /// <param name="priceStart">Price start.</param>
+        /// <param name="priceEnd">Price end.</param>
+        /// <param name="sortType">Type sort.</param>
+        /// <returns>Products by filters ids.</returns>
+        Task<List<StoreWarehouseViewModel>> GetProductsByFilters(int categoryId, int brandId,
+            int? priceStart, int? priceEnd, int sortType);
+
+        /// <summary>
+        /// Get products by name.
+        /// </summary>
+        /// <param name="productName">Product name.</param>
+        /// <returns>All products like name.</returns>
+        Task<List<StoreWarehouseViewModel>> GetProductsByName(string productName);
+
+        /// <summary>
         /// Get all categories.
         /// </summary>
         /// <returns>All categories.</returns>

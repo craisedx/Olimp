@@ -11,12 +11,15 @@ namespace Olimp.Controllers
     {
         private readonly IProductService productService;
         private readonly IBasketService basketService;
+        private readonly IAdminService adminService;
 
         public ProductController(
             IProductService productService,
+            IAdminService adminService,
             IBasketService basketService)
         {
             this.basketService = basketService;
+            this.adminService = adminService;
             this.productService = productService;
         }
         
@@ -34,24 +37,48 @@ namespace Olimp.Controllers
             return View(products);
         }
 
-        public async Task<IActionResult> AllProducts(int categoriesId)
+        public async Task<IActionResult> AllProducts(int categoriesId, int brandId, int? priceStart, int? priceEnd, int sortType)
         {
             var categories = await productService.GetAllCategories();
+            var brands = await adminService.GetAllBrand();
             
             ViewBag.Categories = categories;
+            ViewBag.Brands = brands;
+            ViewBag.SelectedSort = sortType;
             
+
             if (categoriesId != 0)
             {
-                var products = await productService.GetProductsByCategoryId(categoriesId);
-
-                ViewBag.SelectId = categoriesId;
-                
-                return View(products);
+                ViewBag.SelectCategoriesId = categoriesId;
             }
+            
+            if (brandId != 0)
+            {
+                ViewBag.SelectBrandsId = brandId;
+            }
+
+            var products =
+                await productService.GetProductsByFilters(categoriesId, brandId, priceStart, priceEnd, sortType);
+
+            if (products != null) return View(products);
             
             var productsWithOutFilters = await productService.GetAllProducts();
 
             return View(productsWithOutFilters);
+        }
+
+        public async Task<IActionResult> AllBrands()
+        {
+            var brands = await adminService.GetAllBrand();
+
+            return View(brands);
+        }
+
+        public async Task<IActionResult> Search(string productName)
+        {
+            var products = await productService.GetProductsByName(productName);
+
+            return View(products);
         }
 
         public async Task<IActionResult> UserBasket(string id)

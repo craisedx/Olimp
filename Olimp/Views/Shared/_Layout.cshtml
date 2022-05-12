@@ -32,8 +32,15 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="AllProducts">Все товары</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="AllBrands">Все бренды</a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav flex-grow-1 justify-content-end">
+                    <form method="get" asp-action="Search">
+                        <input type="text" name="productName"/>
+                        <button type="submit" class="btn">Поиск</button>
+                    </form>
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item">

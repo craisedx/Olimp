@@ -16,7 +16,7 @@
                     <div class="d-flex justify-content-start align-items-center mt-4">
                         <div class="qty">
                             <input type="hidden" name="UserId" value="@User.Claims.ElementAt(0).Value" />
-                            <input type="hidden" name="StoreWarehouseId" value="@Model.Id" />
+                            <input type="hidden" id="productId" name="StoreWarehouseId" value="@Model.Id" />
                             <input id="quantity" type="hidden" name="Quantity" value="1" />
                             <span class="minus bg-dark">-</span>
                             <input id="count" class="count" name="qty" value="1" />
@@ -42,10 +42,78 @@
                 <div class="h5">Описание :</div>
                 <p>@Model.Product.Description</p>
             </div>
+            @if (User.Identity.IsAuthenticated) {
+                <div>
+                    <div style="margin-top: 2em;" class="form-group">
+                        <h4>Оцените товар:</h4>
+                        <input id="rating" name="rating">
+                    </div>
+                    <div style="margin-top: 2em;" class="form-group">
+                        <textarea class="form-control" id="textArea" rows="3"></textarea>
+                    </div>
+                    <button id="but1" class="btn btn-primary">Отправить</button>
+                </div>
+            }else
+                             {
+                         <div class="alert alert-info" role="alert">
+                             <strong>Ой!</strong> Войдите в аккаунт чтобы оставлять комментарии.
+                         </div>}
         </div>
     </div>
+    @if (ViewBag.AllComments.Count != 0)
+            {
+            <div class="row">
+                <div class="col-11 col-md-12 bg-secondary shadow p-3 mb-5 bg-white rounded m-2">
+                    @foreach (var item in ViewBag.AllComments)
+                    {
+                        <div class="col-11 col-md-12 bg-secondary shadow p-3 mb-5 bg-white rounded">
+                            <div class="row border-bottom">
+                                <div class="col-9">
+                                    <a class="text-dark text-decoration-none" href="#">
+                                        @if(item.User.UserImage != null){
+                                            <img style="max-width:80px;max-height:80px;" class="rounded-circle im_nav_avatar_photo" src=@item.User.UserImage>
+                                        }
+                                        <span style="font-size:24px;" class="font-weight-bold">@item.User.UserName</span>
+                                    </a>
+                                </div>
+                            </div>
+    
+                            <br class="br">
+                            <p>@item.Star</p>
+                            <p>@item.Text</p>
+                        </div>
+                    }
+    
+                </div>
+            </div>
+             }
 </div>
+<script>
+$(document).ready(function() {
+            $("#rating").kendoRating({
+                min: 1,
+                max: 10,
+                value: 0,
+                precision: "item"
+            });
+     });
+    
+    $('#but1').click(function () {
+        var message = $("#textArea").val();
+        var product = $("#productId").val();
+        var score = $("#rating").data("kendoRating").value();
+        var buildUrl = "@Url.Action("AddFeedBack", "Product")" + `/?rating=${score}&product=${product}&message=${message}`;
+        $.ajax({
+            type: "POST",
+            url: buildUrl,
+            success: function(response) {
+                alert(response);
+                window.location.reload();
+            },
+        });
+    });
 
+</script>
 
 <style>
     .qty .count {

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Olimp.ViewModels.Category;
+using Olimp.ViewModels.FeedBack;
 
 namespace Olimp.Business.Services
 {
@@ -127,6 +128,50 @@ namespace Olimp.Business.Services
                 .ToListAsync();
 
             return mapper.Map<List<StoreWarehouseViewModel>>(events);
+        }
+
+        /// <summary>
+        /// Get brand by id.
+        /// </summary>
+        /// <param name="id">Brand id.</param>
+        /// <returns>Brand by id.</returns>
+        public async Task<BrandViewModel> GetBrandById(int id)
+        {
+            var brand = await db.Brands.FirstOrDefaultAsync(x => x.Id == id);
+
+            return mapper.Map<BrandViewModel>(brand);
+        }
+        
+        /// <summary>
+        /// Get comments by store warehouse id.
+        /// </summary>
+        /// <param name="id">StoreWarehouse id.</param>
+        /// <returns>Comments by store warehouse id.</returns>
+        public async Task<List<FeedBackViewModel>> GetCommentsByStoreWarehouseId(int id)
+        {
+            var comments = await db.FeedBacks
+                .Include(x => x.User)
+                .Include(x => x.StoreWarehouse)
+                .Where(x => x.StoreWarehouseId == id)
+                .ToListAsync();
+
+            return mapper.Map<List<FeedBackViewModel>>(comments);
+        }
+        
+        /// <summary>
+        /// Add feedback.
+        /// </summary>
+        /// <param name="model">Feedback model.</param>
+        /// <returns>Message about adding a feedback.</returns>
+        public async Task<string> AddFeedBack(FeedBackViewModel model)
+        {
+            var feedback = mapper.Map<FeedBack>(model);
+            
+            await db.FeedBacks.AddAsync(feedback);
+            
+            await db.SaveChangesAsync();
+            
+            return "FeedBack has been added";
         }
 
         /// <summary>

@@ -17,6 +17,7 @@ namespace Olimp.Migrations
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<FeedBack> FeedBacks { get; set; }
         public DbSet<OrderStoreWarehouses> OrderStoreWarehouses { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Status> Status { get; set; }

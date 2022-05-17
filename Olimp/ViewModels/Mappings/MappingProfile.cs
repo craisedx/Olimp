@@ -2,6 +2,7 @@
 using Olimp.ViewModels.Basket;
 using Olimp.ViewModels.Brand;
 using Olimp.ViewModels.Category;
+using Olimp.ViewModels.FeedBack;
 using Olimp.ViewModels.Order;
 using Olimp.ViewModels.Product;
 using Olimp.ViewModels.StoreWarehouse;
@@ -19,6 +20,15 @@ namespace Olimp.ViewModels.Mappings
                    .ForMember(b => b.ProductBrand, opt => opt.MapFrom(bvm => bvm.ProductBrand))
                    .ForMember(b => b.Products, opt => opt.Ignore())
                    .ReverseMap();
+            CreateMap<FeedBackViewModel, Models.FeedBack>()
+                .ForMember(b => b.Id, opt => opt.MapFrom(bvm => bvm.Id))
+                .ForMember(b => b.Star, opt => opt.MapFrom(bvm => bvm.Star))
+                .ForMember(b => b.User, opt => opt.MapFrom(bvm => bvm.User))
+                .ForMember(b => b.UserId, opt => opt.MapFrom(bvm => bvm.UserId))
+                .ForMember(b => b.StoreWarehouse, opt => opt.MapFrom(bvm => bvm.StoreWarehouse))
+                .ForMember(b => b.StoreWarehouseId, opt => opt.MapFrom(bvm => bvm.StoreWarehouseId))
+                .ForMember(b => b.Text, opt => opt.MapFrom(bvm => bvm.Text))
+                .ReverseMap();
             CreateMap<CategoryViewModel, Models.Category>()
                 .ForMember(c => c.Id, opt => opt.MapFrom(cvm => cvm.Id))
                 .ForMember(c => c.ProductCategory, opt => opt.MapFrom(cvm => cvm.ProductCategory))

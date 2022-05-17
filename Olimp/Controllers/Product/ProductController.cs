@@ -3,7 +3,9 @@ using Olimp.Business.Interfaces;
 using Olimp.Models;
 using Olimp.ViewModels.Basket;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+using Olimp.ViewModels.FeedBack;
 
 namespace Olimp.Controllers
 {
@@ -22,12 +24,39 @@ namespace Olimp.Controllers
             this.adminService = adminService;
             this.productService = productService;
         }
+
+        public async Task<IActionResult> Brand(int id)
+        {
+            var brand = await productService.GetBrandById(id);
+
+            return View(brand);
+        }
         
         public async Task<IActionResult> Product(int id)
         {
             var product = await productService.GetProduct(id);
+            var productComments = await productService.GetCommentsByStoreWarehouseId(id);
 
+            ViewBag.AllComments = productComments;
+            
             return product != null ? View(product) : RedirectToAction("MainPage");
+        }
+
+        public async Task<IActionResult> AddFeedBack(int rating, int product, string message)
+        {
+            var userId = User.Claims.ElementAt(0).Value;
+
+            var model = new FeedBackViewModel()
+            {
+                UserId = userId,
+                Star = rating,
+                Text = message,
+                StoreWarehouseId = product
+            };
+
+            var messageToUser = await productService.AddFeedBack(model);
+            
+            return Json(messageToUser);
         }
 
         public async Task<IActionResult> MainPage()

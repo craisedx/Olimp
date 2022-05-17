@@ -4,6 +4,7 @@ using Olimp.ViewModels.StoreWarehouse;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Olimp.ViewModels.Category;
+using Olimp.ViewModels.FeedBack;
 
 namespace Olimp.Business.Interfaces
 {
@@ -41,6 +42,27 @@ namespace Olimp.Business.Interfaces
         Task<List<StoreWarehouseViewModel>> GetProductsByFilters(int categoryId, int brandId,
             int? priceStart, int? priceEnd, int sortType);
 
+        /// <summary>
+        /// Get comments by store warehouse id.
+        /// </summary>
+        /// <param name="id">StoreWarehouse id.</param>
+        /// <returns>Comments by store warehouse id.</returns>
+        Task<List<FeedBackViewModel>> GetCommentsByStoreWarehouseId(int id);
+
+        /// <summary>
+        /// Get brand by id.
+        /// </summary>
+        /// <param name="id">Brand id.</param>
+        /// <returns>Brand by id.</returns>
+        Task<BrandViewModel> GetBrandById(int id);
+        
+        /// <summary>
+        /// Add feedback.
+        /// </summary>
+        /// <param name="model">Feedback model.</param>
+        /// <returns>Message about adding a feedback.</returns>
+        Task<string> AddFeedBack(FeedBackViewModel model);
+        
         /// <summary>
         /// Get products by name.
         /// </summary>

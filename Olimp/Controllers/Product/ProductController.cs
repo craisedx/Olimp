@@ -61,8 +61,9 @@ namespace Olimp.Controllers
 
         public async Task<IActionResult> MainPage()
         {
-            var products = await productService.GetAllProducts();
+            var products = await productService.GetLastProductsByCount(6);
 
+            ViewBag.Brands = await productService.GetBrandsByCount(4);
             return View(products);
         }
 

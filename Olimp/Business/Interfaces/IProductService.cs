@@ -55,6 +55,20 @@ namespace Olimp.Business.Interfaces
         /// <param name="id">Brand id.</param>
         /// <returns>Brand by id.</returns>
         Task<BrandViewModel> GetBrandById(int id);
+
+        /// <summary>
+        /// Get last products by count.
+        /// </summary>
+        /// <param name="count">Count products.</param>
+        /// <returns>Last products in warehouse.</returns>
+        Task<List<StoreWarehouseViewModel>> GetLastProductsByCount(int count);
+
+        /// <summary>
+        /// Get brands by count.
+        /// </summary>
+        /// <param name="count">Count brands.</param>
+        /// <returns>Brands.</returns>
+        Task<List<BrandViewModel>> GetBrandsByCount(int count);
         
         /// <summary>
         /// Add feedback.

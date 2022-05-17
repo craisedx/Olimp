@@ -188,6 +188,37 @@ namespace Olimp.Business.Services
         }
         
         /// <summary>
+        /// Get last products by count.
+        /// </summary>
+        /// <param name="count">Count products.</param>
+        /// <returns>Last products in warehouse.</returns>
+        public async Task<List<StoreWarehouseViewModel>> GetLastProductsByCount(int count)
+        {
+            var products = await db.StoreWarehouses
+                .Include(x => x.Product).ThenInclude(x => x.Brand)
+                .Include(x => x.Product).ThenInclude(x => x.Category)
+                .OrderByDescending(x => x.Id)
+                .Take(count)
+                .ToListAsync();
+
+            return mapper.Map<List<StoreWarehouseViewModel>>(products);
+        }
+        
+        /// <summary>
+        /// Get brands by count.
+        /// </summary>
+        /// <param name="count">Count brands.</param>
+        /// <returns>Brands.</returns>
+        public async Task<List<BrandViewModel>> GetBrandsByCount(int count)
+        {
+            var products = await db.Brands
+                .Take(count)
+                .ToListAsync();
+
+            return mapper.Map<List<BrandViewModel>>(products);
+        }
+        
+        /// <summary>
         /// Get all categories.
         /// </summary>
         /// <returns>All categories.</returns>

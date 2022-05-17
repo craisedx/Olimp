@@ -158,7 +158,7 @@ namespace Olimp.Business.Services
         {
             var fullPrice = await db.BasketStoreWarehouses
                 .Where(x => x.Basket.User.Id == userId)
-                .SumAsync(x => x.Quantity * x.StoreWarehouse.Price);
+                .SumAsync(x => x.Quantity * (x.StoreWarehouse.Price - (x.StoreWarehouse.Price * (x.StoreWarehouse.Discount/100))));
 
             return fullPrice;
         }

@@ -1,5 +1,40 @@
 ﻿@model List<Olimp.ViewModels.StoreWarehouse.StoreWarehouseViewModel>
-
+<div class="container">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <a href="/product/AllProducts">
+                    <img style="max-width:1110px; max-height: 625px;" class="d-block w-100" src='https://sportswear.by/wp-content/uploads/2021/10/Без-имени-11-min-scaled.jpg'alt="Первый слайд"/>
+                </a>
+            </div>
+            <div class="carousel-item">
+                <a href="/product/AllProducts">
+                    <img style="max-width:1110px; max-height: 625px;" class="d-block w-100" src='https://sportswear.by/wp-content/uploads/2021/10/Без-имени-11-min-scaled.jpg'alt="Первый слайд"/>
+                </a>
+            </div>
+            <div class="carousel-item">
+                <a href="/product/AllProducts">
+                    <img style="max-width:1110px; max-height: 625px;" class="d-block w-100" src='https://sportswear.by/wp-content/uploads/2021/10/Без-имени-11-min-scaled.jpg'alt="Первый слайд"/>
+                </a>
+            </div>
+            
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    <div id="lastAdded" class="mt-5">
+            <h1 class="display-5 mb-4">Последние добавления</h1>
 <div class="row">
     @foreach (var item in @Model)
     {
@@ -18,4 +53,18 @@
             </div>
         </div>
     }
+    </div>
+    </div>
+    
+    <div id="brands" class="mt-5">
+        <h1 class="display-5 mb-4">Бренды</h1>
+        <div class="row">
+            @foreach (var item in @ViewBag.Brands)
+            {
+                <div class="col-6 col-md-3 bg-secondary shadow p-3 mb-5 bg-white rounded m-2">
+                    <a style="color:#000000; text-decoration:none" href="/Product/AllProducts/?brandId=@item.Id"><h3 class="display-5">@item.ProductBrand</h3></a>
+                </div>
+            }
+        </div>
+    </div>
 </div>

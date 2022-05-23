@@ -40,7 +40,7 @@ namespace Olimp.Business.Interfaces
         /// <param name="sortType">Type sort.</param>
         /// <returns>Products by filters ids.</returns>
         Task<List<StoreWarehouseViewModel>> GetProductsByFilters(int categoryId, int brandId,
-            int? priceStart, int? priceEnd, int sortType);
+            double? priceStart, double? priceEnd, int sortType);
 
         /// <summary>
         /// Get comments by store warehouse id.

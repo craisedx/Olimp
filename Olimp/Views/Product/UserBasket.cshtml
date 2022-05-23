@@ -1,11 +1,18 @@
 ﻿@model List<Olimp.ViewModels.Basket.BasketStoreWarehouseViewModel>
 
 <div class="content">
-    @{ int totalAmount = 0; }
+    @{ double totalAmount = 0; }
     @foreach (var item in @Model)
     {
         {
-            totalAmount += item.Quantity * item.StoreWarehouse.Price;
+            if (item.StoreWarehouse.Discount == 0)
+            {
+                totalAmount += item.Quantity * item.StoreWarehouse.Price;
+            }
+            else
+            {
+                totalAmount = Math.Round(item.StoreWarehouse.Price - item.StoreWarehouse.Price * (item.StoreWarehouse.Discount / 100.00), 2) * item.Quantity;
+            }
         }
         <div class="row mt-5 border-bottom pb-3">
             <div class="col-lg-2">

@@ -8,7 +8,7 @@ namespace Olimp.Models
         public int Id { get; set; }
         public Product Product { get; set; }
         public int ProductId { get; set; }
-        public int Price { get; set; }
+        public double Price { get; set; }
         public int Quantity { get; set; }
         public int Discount { get; set; }
         [JsonIgnore]

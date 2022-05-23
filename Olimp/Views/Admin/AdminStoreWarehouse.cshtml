@@ -28,7 +28,7 @@
                                 Id: { editable: false, from: "id", type: "number" },
                                 Product: { from: "product", validation: {required: true} }, 
                                 ProductId: {from: "productId", validation: {required: true} },
-                                Price: { from: "price", type: "number" ,validation: {required: true} }, 
+                                Price: { from: "price", type: "double" ,validation: {required: true} }, 
                                 Quantity: {from: "quantity", type: "number", validation: {required: true} },
                                 Discount: {from: "discount", type: "number", validation: {required: true} }
                             }
@@ -55,15 +55,15 @@
                     }, 
                     {
                         field: "Price",
-                        title: "Цена"
+                        title: "Цена, BYN"
                     }, 
                     {
                         field: "Quantity",
-                        title: "Количество",
+                        title: "Количество, шт",
                     },
                     {
                         field: "Discount",
-                        title: "Скидка",
+                        title: "Скидка, %",
                     },
                     {
                         command: "edit", 

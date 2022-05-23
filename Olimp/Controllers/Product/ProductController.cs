@@ -67,7 +67,7 @@ namespace Olimp.Controllers
             return View(products);
         }
 
-        public async Task<IActionResult> AllProducts(int categoriesId, int brandId, int? priceStart, int? priceEnd, int sortType)
+        public async Task<IActionResult> AllProducts(int categoriesId, int brandId, double? priceStart, double? priceEnd, int sortType)
         {
             var categories = await productService.GetAllCategories();
             var brands = await adminService.GetAllBrand();
@@ -75,6 +75,8 @@ namespace Olimp.Controllers
             ViewBag.Categories = categories;
             ViewBag.Brands = brands;
             ViewBag.SelectedSort = sortType;
+            ViewBag.PriceStart = priceStart;
+            ViewBag.PriseEnd = priceEnd;
             
 
             if (categoriesId != 0)

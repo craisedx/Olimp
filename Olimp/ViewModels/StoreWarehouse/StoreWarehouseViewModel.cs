@@ -22,7 +22,7 @@ namespace Olimp.ViewModels.StoreWarehouse
         /// <summary>
         /// Gets or sets price
         /// </summary>
-        public int Price { get; set; }
+        public double Price { get; set; }
 
         /// <summary>
         /// Gets or sets quantity.

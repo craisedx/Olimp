@@ -154,7 +154,7 @@ namespace Olimp.Business.Services
             return order.Id;
         }
 
-        private async Task<int> GetOrderFullPriceByUserId(string userId)
+        private async Task<double> GetOrderFullPriceByUserId(string userId)
         {
             var fullPrice = await db.BasketStoreWarehouses
                 .Where(x => x.Basket.User.Id == userId)

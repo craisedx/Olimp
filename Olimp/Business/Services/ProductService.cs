@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Olimp.Business.Interfaces;
 using Olimp.Migrations;
@@ -63,7 +64,7 @@ namespace Olimp.Business.Services
         /// <param name="priceEnd">Price end.</param>
         /// <param name="sortType">Type sort.</param>
         /// <returns>Products by filters ids.</returns>
-        public async Task<List<StoreWarehouseViewModel>> GetProductsByFilters(int categoryId, int brandId, int? priceStart, int? priceEnd, int sortType)
+        public async Task<List<StoreWarehouseViewModel>> GetProductsByFilters(int categoryId, int brandId, double? priceStart, double? priceEnd, int sortType)
         {
             var products = await db.StoreWarehouses
                 .Include(x => x.Product).ThenInclude(x => x.Brand)
@@ -83,12 +84,12 @@ namespace Olimp.Business.Services
 
             if (priceStart.HasValue)
             {
-                products = products.Where(x => x.Price >= priceStart.Value).ToList();
+                products = products.Where(x => Math.Round(x.Price - x.Price * (x.Discount / 100.00), 2) >= priceStart.Value).ToList();
             }
 
             if (priceEnd.HasValue)
             {
-                products = products.Where(x => x.Price <= priceEnd).ToList();
+                products = products.Where(x => Math.Round(x.Price - x.Price * (x.Discount / 100.00), 2) <= priceEnd).ToList();
             }
 
             switch (sortType)
@@ -99,12 +100,12 @@ namespace Olimp.Business.Services
                 }
                 case 1:
                 {
-                    products = products.OrderBy(x => x.Price).ToList();
+                    products = products.OrderBy(x => Math.Round(x.Price - x.Price * (x.Discount / 100.00), 2)).ToList();
                     break;
                 }
                 case 2:
                 {
-                    products = products.OrderByDescending(x => x.Price).ToList();
+                    products = products.OrderByDescending(x => Math.Round(x.Price - x.Price * (x.Discount / 100.00), 2)).ToList();
                     break;
                 }
             }
@@ -153,6 +154,7 @@ namespace Olimp.Business.Services
                 .Include(x => x.User)
                 .Include(x => x.StoreWarehouse)
                 .Where(x => x.StoreWarehouseId == id)
+                .OrderByDescending(x => x.Id)
                 .ToListAsync();
 
             return mapper.Map<List<FeedBackViewModel>>(comments);

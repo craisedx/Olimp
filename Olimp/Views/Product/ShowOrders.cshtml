@@ -1,6 +1,6 @@
 ﻿@model List<Order>
 
-<div id="content">
+<div class="container">
     <div class="row mt-5">
         <div class="col-lg-12">
             <table class="table table-hover">
@@ -9,7 +9,8 @@
                         <th scope="col">Номер заказа</th>
                         <th scope="col">Дата заказа</th>
                         <th scope="col">Статус</th>
-                        <th scope="col">Итоговая сумма</th>
+                        <th scope="col">Адрес самовывоза</th>
+                        <th scope="col">Итоговая сумма, BYN</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -19,6 +20,7 @@
                             <th scope="row"><a asp-action="Order" asp-controller="Product" asp-route-id="@order.Id">@order.Id</a></th>
                             <td>@order.OrderDate</td>
                             <td>@order.Status.OrderStatus</td>
+                            <td>@order.StoreAddress</td>
                             <td>@order.FinalPrice BYN</td>
                         </tr>
                     }

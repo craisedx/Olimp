@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Olimp.ViewModels;
 using Olimp.ViewModels.Brand;
 using Olimp.ViewModels.Category;
 using Olimp.ViewModels.Order;
@@ -29,5 +31,6 @@ namespace Olimp.Business.Interfaces
         public Task<BrandViewModel> DeleteBrand(BrandViewModel model);
         public Task<ProductViewModel> DeleteProduct(ProductViewModel model);
         public Task<StoreWarehouseViewModel> DeleteStoreWarehouse(StoreWarehouseViewModel model);
+        public List<SellByCategoryChartViewModel> GetSellsByCategory(DateTime startDate, DateTime endDate);
     }
 }

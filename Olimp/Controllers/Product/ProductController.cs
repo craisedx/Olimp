@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Olimp.Business.Interfaces;
-using Olimp.Models;
-using Olimp.ViewModels.Basket;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Olimp.Business.Interfaces;
+using Olimp.Models;
+using Olimp.ViewModels.Basket;
 using Olimp.ViewModels.FeedBack;
 
-namespace Olimp.Controllers
+namespace Olimp.Controllers.Product
 {
     public class ProductController : Controller
     {
@@ -23,6 +24,11 @@ namespace Olimp.Controllers
             this.basketService = basketService;
             this.adminService = adminService;
             this.productService = productService;
+        }
+
+        public IActionResult About()
+        {
+            return View();
         }
 
         public async Task<IActionResult> Brand(int id)
@@ -116,6 +122,11 @@ namespace Olimp.Controllers
         public async Task<IActionResult> UserBasket(string id)
         {
             var userBasket = await basketService.GetUserBasket(id);
+            List<string> address = new List<string>();
+            address.Add("ул. Козлова, 35");
+            address.Add("ул. Сергея Есенина, 6");
+            address.Add("Проспект Независимости, 58");
+            ViewBag.Address = address;
 
             return View(userBasket);
         }
@@ -135,9 +146,9 @@ namespace Olimp.Controllers
             return RedirectToAction("UserBasket", new { id = userId });
         }
 
-        public async Task<IActionResult> AddOrder(string userId)
+        public async Task<IActionResult> AddOrder(string userId, string address)
         {
-            await basketService.AddOrder(userId);
+            await basketService.AddOrder(userId,address);
 
             return RedirectToAction("UserBasket", new { id = userId });
         }

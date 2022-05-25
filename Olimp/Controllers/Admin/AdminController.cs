@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Olimp.Business.Interfaces;
 using Olimp.ViewModels.Brand;
@@ -18,6 +19,19 @@ namespace Olimp.Controllers.Admin
             _adminService = adminService;
         }
 
+        public IActionResult CategoryChart()
+        {
+            return View();
+        }
+        
+        public IActionResult GetSellsByCategory(string dateStart, string dateEnd)
+        {
+            DateTime dStart = DateTime.Parse(dateStart);
+            DateTime dEnd = DateTime.Parse(dateEnd);
+            var events = _adminService.GetSellsByCategory(dStart, dEnd);
+            return Json(events);
+        }
+        
         // GET
         public IActionResult Index()
         {

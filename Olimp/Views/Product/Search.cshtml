@@ -2,21 +2,38 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-12 d-flex justify-content-center mb-5">
-            <div class="h2">Найдено @Model.Count</div>
+        <div class="col-lg-12 d-flex justify-content-center mb-3 mt-3">
+            <div class="h2">Найдено @Model.Count результа</div>
         </div>
         @foreach (var item in @Model)
         {
             <div class="col-4 mb-4">
                 <div class="card">
+                    @if (item.Discount != 0)
+                    {
+                        <span class="badge badge-danger" style="position: absolute; font-size: 20px">-@item.Discount%</span>
+                    }
                     <img class="card-img responsive" src="@item.Product.Image" alt="@item.Product.Title image">
                     <div class="card-body">
                         <h4 class="card-title">@item.Product.Title</h4>
-                        <div class="buy d-flex justify-content-between align-items-center">
-                            <div class="price text-success">
-                                <h5 class="mt-4">@item.Price BYN</h5>
+                        <div class="buy d-flex justify-content-between align-items-baseline">
+                            <div class="price">
+                                @if (item.Discount == 0)
+                                {
+                                    <div class="d-flex align-items-baseline">
+                                        <h3 class="mt-3 text-success">@item.Price</h3><h5 class="ml-2">BYN</h5>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="d-flex align-items-baseline">
+                                        <h3 class="mt-3 text-danger">@Math.Round(item.Price - item.Price * (item.Discount / 100.00), 2)</h3>
+                                        <del class="ml-1">@item.Price</del>
+                                        <h5 class="ml-2">BYN</h5>
+                                    </div>
+                                }
                             </div>
-                            <a asp-action="Product" asp-controller="Product" asp-route-id="@item.Id" class="btn btn-primary mt-3"><i class="fas fa-shopping-cart"></i>Подробнее</a>
+                            <a asp-action="Product" asp-controller="Product" asp-route-id="@item.Id" class="btn btn-primary mt-2"><i class="fas fa-shopping-cart"></i>Подробнее</a>
                         </div>
                     </div>
                 </div>

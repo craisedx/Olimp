@@ -33,7 +33,8 @@ namespace Olimp.Business.Interfaces
         /// Add order.
         /// </summary>
         /// <param name="userId">User id.</param>
-        Task AddOrder(string userId);
+        /// <param name="address">Address</param>
+        Task AddOrder(string userId, string address);
 
         /// <summary>
         /// Get orders by user id.

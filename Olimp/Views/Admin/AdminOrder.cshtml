@@ -1,4 +1,6 @@
-﻿<div id="grid"></div>
+﻿<div class="m-3">
+    <div id="grid"></div>
+</div>
 <script>
                $(document).ready(function() {
                    $("#grid").kendoGrid({
@@ -20,7 +22,8 @@
                                        OrderDate: { editable: false, from: "orderDate", type: "date" },
                                        FinalPrice: { editable: false, from: "finalPrice", type: "number"},
                                        Status: { from: "status" },
-                                       StatusId: { from: "statusId", type: "number" }
+                                       StatusId: { from: "statusId", type: "number" },
+                                       Address: { editable: false, from : "address"}
                                    }
                                }
                            },
@@ -52,7 +55,11 @@
                            },
                            {
                                field: "FinalPrice",
-                               title: "Сумма к оплате"  
+                               title: "Сумма к оплате, BYN"  
+                           },
+                           {
+                               field: "FinalPrice",
+                               title: "Пункт самовывоза"
                            },
                            {
                                field: "Status.orderStatus",

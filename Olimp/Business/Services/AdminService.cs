@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Olimp.Business.Interfaces;
 using Olimp.Migrations;
 using Olimp.Models;
+using Olimp.ViewModels;
 using Olimp.ViewModels.Brand;
 using Olimp.ViewModels.Category;
 using Olimp.ViewModels.Order;
@@ -220,6 +223,26 @@ namespace Olimp.Business.Services
             await _db.SaveChangesAsync();
 
             return new StoreWarehouseViewModel();
+        }
+
+        public List<SellByCategoryChartViewModel> GetSellsByCategory(DateTime dateStart, DateTime dateEnd)
+        {
+            var sells = _db.OrderStoreWarehouses.Include(x => x.StoreWarehouse).ThenInclude(x => x.Product)
+                .ThenInclude(x => x.Category)
+                .Include(x => x.Order)
+                .Where(x => x.Order.OrderDate.Date >= dateStart && x.Order.OrderDate.Date <= dateEnd)
+                .ToList().OrderBy(x => x.Order.OrderDate.Date).GroupBy(x => x.StoreWarehouse.Product.Category)
+                .Select(x => new SellByCategoryChartViewModel()
+                {
+                    Count = x.Select(y =>
+                        _db.OrderStoreWarehouses.Count(
+                            z => z.StoreWarehouse.Product.Category.ProductCategory == x.Key.ProductCategory &&
+                                 z.Order.OrderDate.Date >= dateStart.Date &&
+                                 z.Order.OrderDate.Date <= dateEnd.Date)).Count(),
+                    Category = x.Key.ProductCategory
+                }).ToList();
+
+            return sells;
         }
     }
 }

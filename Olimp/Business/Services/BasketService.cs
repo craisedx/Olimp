@@ -83,13 +83,14 @@ namespace Olimp.Business.Services
         /// Add order.
         /// </summary>
         /// <param name="userId">User id.</param>
-        public async Task AddOrder(string userId)
+        /// <param name="address"></param>
+        public async Task AddOrder(string userId, string address)
         {
             var basket = await db.BasketStoreWarehouses
                 .Include(x => x.StoreWarehouse)
                 .Where(x => x.Basket.User.Id == userId).ToListAsync();
 
-            var orderId = await GetOrderId(userId);
+            var orderId = await GetOrderId(userId, address);
             
             foreach(var item in basket)
             {
@@ -138,14 +139,15 @@ namespace Olimp.Business.Services
             return order;
         }
 
-        private async Task<int> GetOrderId(string userId)
+        private async Task<int> GetOrderId(string userId, string address)
         {
             var order = new Order
             {
                 UserId = userId,
                 OrderDate = DateTime.Now,
                 StatusId = 1,
-                FinalPrice = await GetOrderFullPriceByUserId(userId)
+                FinalPrice = await GetOrderFullPriceByUserId(userId),
+                StoreAddress = address
             };
 
             await db.Orders.AddAsync(order);
@@ -158,7 +160,7 @@ namespace Olimp.Business.Services
         {
             var fullPrice = await db.BasketStoreWarehouses
                 .Where(x => x.Basket.User.Id == userId)
-                .SumAsync(x => x.Quantity * (x.StoreWarehouse.Price - (x.StoreWarehouse.Price * (x.StoreWarehouse.Discount/100))));
+                .SumAsync(x => x.Quantity * (x.StoreWarehouse.Price - (x.StoreWarehouse.Price * (x.StoreWarehouse.Discount/100.00))));
 
             return fullPrice;
         }

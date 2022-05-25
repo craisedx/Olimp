@@ -199,7 +199,7 @@ namespace Olimp.Business.Services
             var products = await db.StoreWarehouses
                 .Include(x => x.Product).ThenInclude(x => x.Brand)
                 .Include(x => x.Product).ThenInclude(x => x.Category)
-                .OrderByDescending(x => x.Id)
+                .OrderByDescending(x => x.Discount)
                 .Take(count)
                 .ToListAsync();
 
